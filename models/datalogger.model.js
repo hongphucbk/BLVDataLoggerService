@@ -1,0 +1,16 @@
+var mongoose = require('mongoose');
+var dataloggerSchema = new mongoose.Schema({
+	machine: String,
+	CO: Number,
+	length: Number,
+	qty: Number,
+	qdone: Number,
+	markprint: String,
+	instruction: String,
+	user: String,
+	created_at: Date,
+});
+
+var DataLogger = mongoose.model('DataLogger', dataloggerSchema, 'datalogger');
+
+module.exports = DataLogger;
