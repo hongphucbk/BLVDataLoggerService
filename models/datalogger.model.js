@@ -8,6 +8,8 @@ var dataloggerSchema = new mongoose.Schema({
 	markprint: String,
 	instruction: String,
 	user: String,
+	qty1: Number,
+	interval: String,
 	created_at: Date,
 });
 
