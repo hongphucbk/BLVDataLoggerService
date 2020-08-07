@@ -30,18 +30,23 @@ server.on('published',function getdata(packet,client) {
 	{
 		// console.log('data: ', packet.topic);
 		let data = packet.payload.toString();
-		
-		let jsondata = JSON.parse(data);
-		jsondata.created_at = new Date();
-		// jsondata.PR = 20;
-		// jsondata.status = 'COOLING'
-		//console.log(data);
-		console.log(jsondata);
-		
-		var saveData = jsondata
+		try{
+			let jsondata = JSON.parse(data);
+			jsondata.created_at = new Date();
+			// jsondata.PR = 20;
+			// jsondata.status = 'COOLING'
+			//console.log(data);
+			//console.log(jsondata);
+			
+			var saveData = jsondata
 
-		DataLogger.insertMany(saveData, function(err) {
-			if (err) return handleError(err);
-		});
+			DataLogger.insertMany(saveData, function(err) {
+				if (err) return handleError(err);
+			});
+
+
+		}catch(err){
+			console.log("Error " + err.message);
+		}
 	} 
 })
