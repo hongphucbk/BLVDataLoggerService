@@ -27,10 +27,9 @@ server.on('ready', function(){
 
 server.on('published',function getdata(packet,client) {
 	if(packet.topic =='data') 
-	{
-		// console.log('data: ', packet.topic);
-		let data = packet.payload.toString();
+	{		
 		try{
+			let data = packet.payload.toString();
 			let jsondata = JSON.parse(data);
 			jsondata.created_at = new Date();
 			// jsondata.PR = 20;
@@ -41,10 +40,10 @@ server.on('published',function getdata(packet,client) {
 			var saveData = jsondata
 
 			DataLogger.insertMany(saveData, function(err) {
-				if (err) return handleError(err);
+				if (err){
+					console.log('MongoDB has error', err.message)
+				}
 			});
-
-
 		}catch(err){
 			console.log("Error " + err.message);
 		}

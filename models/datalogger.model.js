@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var dataloggerSchema = new mongoose.Schema({
 	machine: String,
-	CO: Number,
+	CO: String,
 	length: Number,
 	qty: Number,
 	qdone: Number,
