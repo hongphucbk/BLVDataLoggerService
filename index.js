@@ -71,7 +71,7 @@ server.on('published',function getdata(packet,client) {
 			// });
 
 			let strPath = 'http://out.lysaghtvietnam.com/v10/inplan/report/'+ jsondata.MO +'/auto/1';
-			axios.get().then(resp => {
+			axios.get(strPath).then(resp => {
 
 			    //console.log(resp.data);
 			});
