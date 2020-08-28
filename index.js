@@ -69,11 +69,12 @@ server.on('published',function getdata(packet,client) {
 			// 		console.log('MongoDB has error', err.message)
 			// 	}
 			// });
+			console.log(jsondata.MO)
 
 			let strPath = 'http://out.lysaghtvietnam.com/v10/inplan/report/'+ jsondata.MO +'/auto/1';
 			axios.get(strPath).then(resp => {
 
-			    //console.log(resp.data);
+			    console.log(resp.data);
 			});
 
 
