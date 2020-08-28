@@ -1,5 +1,7 @@
 require('dotenv').config();
 var mongoose = require('mongoose');
+const axios = require('axios');
+
 
 mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: true});
 
@@ -44,6 +46,37 @@ server.on('published',function getdata(packet,client) {
 					console.log('MongoDB has error', err.message)
 				}
 			});
+		}catch(err){
+			console.log("Error " + err.message);
+		}
+	} 
+
+	if(packet.topic =='bondek2') 
+	{		
+		try{
+			let data = packet.payload.toString();
+			let jsondata = JSON.parse(data);
+			jsondata.created_at = new Date();
+			// jsondata.PR = 20;
+			// jsondata.status = 'COOLING'
+			//console.log(data);
+			//console.log(jsondata);
+			
+			var saveData = jsondata
+
+			// DataLogger.insertMany(saveData, function(err) {
+			// 	if (err){
+			// 		console.log('MongoDB has error', err.message)
+			// 	}
+			// });
+
+			let strPath = 'http://out.lysaghtvietnam.com/v10/inplan/report/'+ jsondata.MO +'/auto/1';
+			axios.get().then(resp => {
+
+			    //console.log(resp.data);
+			});
+
+
 		}catch(err){
 			console.log("Error " + err.message);
 		}
