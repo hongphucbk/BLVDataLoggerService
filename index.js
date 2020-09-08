@@ -6,6 +6,7 @@ const axios = require('axios');
 mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: true});
 
 var DataLogger = require('./models/datalogger.model')
+var History = require('./models/history.model')
 
 // Add server MQTT
 var mosca = require('mosca');
@@ -26,6 +27,8 @@ server.on('ready', function(){
 });
 
 
+let data
+let jsondata
 
 server.on('published',function getdata(packet,client) {
 	if(packet.topic =='data') 
@@ -54,30 +57,41 @@ server.on('published',function getdata(packet,client) {
 	if(packet.topic =='bondek2') 
 	{		
 		try{
-			let data = packet.payload.toString();
-			let jsondata = JSON.parse(data);
+			data = packet.payload.toString();
+			jsondata = JSON.parse(data);
 			jsondata.created_at = new Date();
 			// jsondata.PR = 20;
 			// jsondata.status = 'COOLING'
 			//console.log(data);
 			//console.log(jsondata);
 			
-			var saveData = jsondata
 
 			// DataLogger.insertMany(saveData, function(err) {
 			// 	if (err){
 			// 		console.log('MongoDB has error', err.message)
 			// 	}
 			// });
-			console.log(jsondata.MO)
+			//console.log(jsondata.MO)
 
 			let strPath = 'http://out.lysaghtvietnam.com/v10/inplan/report/'+ jsondata.MO +'/auto/1';
 			axios.get(strPath).then(resp => {
+				if (resp.data.result == 1) {
+					console.log(resp.data);
+					jsondata.isSuccessReported = 1
 
-			    console.log(resp.data);
+				}else{
+					jsondata.isSuccessReported = 0
+				}
+
+				saveData = jsondata
+				History.insertMany(saveData, function(err) {
+					if (err){
+						console.log('MongoDB has error', err.message)
+					}
+				});
+
+			    
 			});
-
-
 		}catch(err){
 			console.log("Error " + err.message);
 		}
